@@ -45,3 +45,7 @@ yalc.lock
 /compiledImplementationGuides/*
 !/compiledImplementationGuides/gitkeep
 /.webpack/
+
+NOTES.md
+.python-version
+.DS_Store
