@@ -84,7 +84,7 @@
     "axios": "^0.21.4",
     "cdk-nag": "^2.14.14",
     "constructs": "^10.0.0",
-    "fhir-works-on-aws-authz-rbac": "5.0.0",
+    "@etherahealth/fhir-works-on-aws-authz-noauth": "1.0.5",
     "fhir-works-on-aws-interface": "12.1.0",
     "fhir-works-on-aws-routing": "6.6.1",
     "fhir-works-on-aws-persistence-ddb": "3.12.0",

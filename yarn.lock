@@ -1744,6 +1744,15 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@etherahealth/fhir-works-on-aws-authz-noauth@1.0.5":
+  version "1.0.5"
+  resolved "https://npm.pkg.github.com/download/@etherahealth/fhir-works-on-aws-authz-noauth/1.0.5/6273e48c7362dca6484cb19eb5e1f47ce7542af0#6273e48c7362dca6484cb19eb5e1f47ce7542af0"
+  integrity sha512-lAH9dEigP9XQLjF/VseCMjeiGf85jAaW0BqZ+UgSC6UpGxNdAF9+SPWSmMDd8csbAeDxAQsdoFWX2/bSAbwWKA==
+  dependencies:
+    fhir-works-on-aws-interface "^11.1.0"
+    jsonwebtoken "^8.5.1"
+    lodash "^4.17.20"
+
 "@gar/promisify@^1.0.1":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.3.tgz#555193ab2e3bb3b6adc3d551c9c030d9e860daf6"
@@ -6443,15 +6452,6 @@ fecha@^4.2.0:
   resolved "https://registry.yarnpkg.com/fecha/-/fecha-4.2.3.tgz#4d9ccdbc61e8629b259fdca67e65891448d569fd"
   integrity sha512-OP2IUU6HeYKJi3i0z4A19kHMQoLVs4Hc+DPqqxI2h/DPZHTm/vjsfC6P0b4jCMy14XizLBqvndQ+UilD7707Jw==
 
-fhir-works-on-aws-authz-rbac@5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/fhir-works-on-aws-authz-rbac/-/fhir-works-on-aws-authz-rbac-5.0.0.tgz#93d60930f0601e9be72de55c6ce23976230d0519"
-  integrity sha512-ZYy5A1aHU2xFBDTEtHSYdj8dA7vvbB3vD2wu0+ttGX5iOnV1J8EeTGX+kXtVky/nlm43qKrPxb5RbPHIUJiQWg==
-  dependencies:
-    fhir-works-on-aws-interface "^10.0.0"
-    jsonwebtoken "^8.5.1"
-    lodash "^4.17.20"
-
 fhir-works-on-aws-interface@12.1.0, fhir-works-on-aws-interface@^12.0.0, fhir-works-on-aws-interface@^12.1.0:
   version "12.1.0"
   resolved "https://registry.yarnpkg.com/fhir-works-on-aws-interface/-/fhir-works-on-aws-interface-12.1.0.tgz#74ff054cdf22eae0122c9ec32562475bcdd2cccf"
@@ -6460,10 +6460,10 @@ fhir-works-on-aws-interface@12.1.0, fhir-works-on-aws-interface@^12.0.0, fhir-wo
     winston "^3.3.3"
     winston-transport "^4.4.0"
 
-fhir-works-on-aws-interface@^10.0.0:
-  version "10.0.0"
-  resolved "https://registry.yarnpkg.com/fhir-works-on-aws-interface/-/fhir-works-on-aws-interface-10.0.0.tgz#5ad0599e55b40c7be1f9ef0cf9252d6da1f8d20a"
-  integrity sha512-JQ/eICquJlI5P6s7e1xiuABnPuhh4d7VeyPFc5OFHgpLbyBCTrbyz0gVMc3BdlQVXQ7IAa0HYgjNsLMoeFt2JA==
+fhir-works-on-aws-interface@^11.1.0:
+  version "11.3.0"
+  resolved "https://registry.yarnpkg.com/fhir-works-on-aws-interface/-/fhir-works-on-aws-interface-11.3.0.tgz#2a02162ee19cfb188d564d37925ead98aef10915"
+  integrity sha512-d3QtB0HsjRsDbFZm6IxH0s9nZpndWej01rnJKpXg7RFjepPDRztu+bNo/Me3hwxVexiCgOIVLxXs4DqAPRHEKA==
   dependencies:
     winston "^3.3.3"
     winston-transport "^4.4.0"

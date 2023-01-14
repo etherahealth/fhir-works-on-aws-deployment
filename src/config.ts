@@ -12,7 +12,7 @@ import {
     Validator,
 } from 'fhir-works-on-aws-interface';
 import { ElasticSearchService } from 'fhir-works-on-aws-search-es';
-import { RBACHandler } from 'fhir-works-on-aws-authz-rbac';
+import { NoAuthHandler } from '@etherahealth/fhir-works-on-aws-authz-noauth';
 import {
     DynamoDb,
     DynamoDbDataService,
@@ -24,7 +24,7 @@ import JsonSchemaValidator from 'fhir-works-on-aws-routing/lib/router/validation
 import HapiFhirLambdaValidator from 'fhir-works-on-aws-routing/lib/router/validation/hapiFhirLambdaValidator';
 import SubscriptionValidator from 'fhir-works-on-aws-routing/lib/router/validation/subscriptionValidator';
 import getAllowListedSubscriptionEndpoints from './subscriptions/allowList';
-import RBACRules from './RBACRules';
+import NoAuthRules from './NoAuthRules';
 import { loadImplementationGuides } from './implementationGuides/loadCompiledIGs';
 
 const { IS_OFFLINE, ENABLE_MULTI_TENANCY, ENABLE_SUBSCRIPTIONS } = process.env;
@@ -34,7 +34,7 @@ const enableSubscriptions = ENABLE_SUBSCRIPTIONS === 'true';
 
 export const fhirVersion: FhirVersion = '4.0.1';
 const baseResources = fhirVersion === '4.0.1' ? BASE_R4_RESOURCES : BASE_STU3_RESOURCES;
-const authService = IS_OFFLINE ? stubs.passThroughAuthz : new RBACHandler(RBACRules(baseResources), fhirVersion);
+const authService = IS_OFFLINE ? stubs.passThroughAuthz : new NoAuthHandler(NoAuthRules(baseResources), fhirVersion);
 const dynamoDbDataService = new DynamoDbDataService(DynamoDb, false, { enableMultiTenancy });
 const dynamoDbBundleService = new DynamoDbBundleService(DynamoDb, undefined, undefined, {
     enableMultiTenancy,
@@ -75,11 +75,6 @@ const esSearch = new ElasticSearchService(
 
 const s3DataService = new S3DataService(dynamoDbDataService, fhirVersion, { enableMultiTenancy });
 
-const OAuthUrl =
-    process.env.OAUTH2_DOMAIN_ENDPOINT === '[object Object]' || process.env.OAUTH2_DOMAIN_ENDPOINT === undefined
-        ? 'https://OAUTH2.com'
-        : process.env.OAUTH2_DOMAIN_ENDPOINT;
-
 export const getFhirConfig = async (): Promise<FhirConfig> => {
     if (enableSubscriptions) {
         const subscriptionAllowList = await getAllowListedSubscriptionEndpoints();
@@ -96,10 +91,10 @@ export const getFhirConfig = async (): Promise<FhirConfig> => {
             authorization: authService,
             // Used in Capability Statement Generation only
             strategy: {
-                service: 'OAuth',
+                service: 'Basic',
                 oauthPolicy: {
-                    authorizationEndpoint: `${OAuthUrl}/authorize`,
-                    tokenEndpoint: `${OAuthUrl}/token`,
+                    authorizationEndpoint: '',
+                    tokenEndpoint: '',
                 },
             },
         },

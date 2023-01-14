@@ -3,7 +3,7 @@
  *  SPDX-License-Identifier: Apache-2.0
  */
 
-import { RBACConfig } from 'fhir-works-on-aws-authz-rbac';
+import { NoAuthConfig } from '@etherahealth/fhir-works-on-aws-authz-noauth';
 
 export const financialResources: string[] = [
     'Coverage',
@@ -24,24 +24,16 @@ export const financialResources: string[] = [
     'InsurancePlan',
 ];
 
-const RBACRules = (baseResources: string[]): RBACConfig => {
+const NoAuthRules = (baseResources: string[]): NoAuthConfig => {
     return {
         version: 1.0,
         groupRules: {
-            practitioner: {
+            everyone: {
                 operations: ['create', 'read', 'update', 'delete', 'vread', 'search-type', 'transaction'],
                 resources: baseResources,
-            },
-            'non-practitioner': {
-                operations: ['read', 'vread', 'search-type'],
-                resources: financialResources,
-            },
-            auditor: {
-                operations: ['read', 'vread', 'search-type'],
-                resources: ['Patient'],
             },
         },
     };
 };
 
-export default RBACRules;
+export default NoAuthRules;

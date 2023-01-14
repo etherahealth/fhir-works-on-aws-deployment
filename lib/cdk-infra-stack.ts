@@ -12,7 +12,6 @@ import {
 import {
     ApiKeySourceType,
     AuthorizationType,
-    CognitoUserPoolsAuthorizer,
     RestApi,
     EndpointType,
     LambdaIntegration,
@@ -496,13 +495,6 @@ export default class FhirWorksStack extends Stack {
         });
 
         // Define main resources here:
-        const apiGatewayAuthorizer = new CognitoUserPoolsAuthorizer(this, 'apiGatewayAuthorizer', {
-            authorizerName: `fhir-works-authorizer-${props!.stage}-${props!.region}`,
-            identitySource: 'method.request.header.Authorization',
-            cognitoUserPools: [cognitoResources.userPool],
-            resultsCacheTtl: Duration.seconds(300),
-        });
-
         const subscriptionsMatcherDLQ = new Queue(this, 'subscriptionsMatcherDLQ', {
             retentionPeriod: Duration.days(14),
             encryptionMasterKey: Alias.fromAliasName(this, 'kmsMasterKeyId', 'alias/aws/sqs'),
@@ -677,8 +669,8 @@ export default class FhirWorksStack extends Stack {
         apiGatewayRestApi
             .addUsagePlan('apiUsagePlan', {
                 throttle: {
-                    burstLimit: 100, // maximum API request rate limit over a time ranging from one to a few seconds
-                    rateLimit: 50, // average requests per second over an extended period of time
+                    burstLimit: 5, // maximum API request rate limit over a time ranging from one to a few seconds
+                    rateLimit: 2, // average requests per second over an extended period of time
                 },
                 name: `fhir-service-${props!.stage}`,
                 apiStages: [
@@ -690,13 +682,11 @@ export default class FhirWorksStack extends Stack {
             })
             .addApiKey(apiGatewayApiKey);
         apiGatewayRestApi.root.addMethod('ANY', new LambdaIntegration(fhirServerLambda), {
-            authorizer: apiGatewayAuthorizer,
-            authorizationType: AuthorizationType.COGNITO,
+            authorizationType: AuthorizationType.NONE,
             apiKeyRequired: true,
         });
         apiGatewayRestApi.root.addResource('{proxy+}').addMethod('ANY', new LambdaIntegration(fhirServerLambda), {
-            authorizer: apiGatewayAuthorizer,
-            authorizationType: AuthorizationType.COGNITO,
+            authorizationType: AuthorizationType.NONE,
             apiKeyRequired: true,
         });
         apiGatewayRestApi.root.addResource('metadata').addMethod('GET', new LambdaIntegration(fhirServerLambda), {
@@ -736,6 +726,34 @@ export default class FhirWorksStack extends Stack {
                 {
                     id: 'AwsSolutions-COG4',
                     reason: 'The /metadata endpoints do not require an Authorizer',
+                },
+            ],
+        );
+        NagSuppressions.addResourceSuppressionsByPath(
+            this,
+            `/fhir-service-${props!.stage}/apiGatewayRestApi/Default/ANY/Resource`,
+            [
+                {
+                    id: 'AwsSolutions-APIG4',
+                    reason: 'Authorization has been removed',
+                },
+                {
+                    id: 'AwsSolutions-COG4',
+                    reason: 'Authorization has been removed',
+                },
+            ],
+        );
+        NagSuppressions.addResourceSuppressionsByPath(
+            this,
+            `/fhir-service-${props!.stage}/apiGatewayRestApi/Default/{proxy+}/ANY/Resource`,
+            [
+                {
+                    id: 'AwsSolutions-APIG4',
+                    reason: 'Authorization has been removed',
+                },
+                {
+                    id: 'AwsSolutions-COG4',
+                    reason: 'Authorization has been removed',
                 },
             ],
         );

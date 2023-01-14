@@ -38,7 +38,7 @@ custom:
 
 provider:
   name: aws
-  region: us-west-2
+  region: eu-west-2
   stage: dev
   runtime: nodejs14.x
   architecture: x86_64
@@ -90,19 +90,11 @@ functions:
     role: FhirServerLambdaRole
     events:
       - http:
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId: !Ref ApiGatewayAuthorizer
           method: ANY
           path: /
-          private: true
       - http:
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId: !Ref ApiGatewayAuthorizer
           method: ANY
           path: '{proxy+}'
-          private: true
       - http:
           method: GET
           path: /metadata
