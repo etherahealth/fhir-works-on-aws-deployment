@@ -357,7 +357,7 @@ Resources:
       Namespace: 'AWS/ES'
       Period: 60
       Statistic: Minimum
-      Threshold: !If [isDev, 2500, 22500] # in MB; aiming for alarm at 25% remaining
+      Threshold: !If [isDev, 1000, 22500] # in MB; aiming for alarm at 25% remaining
       OKActions:
         - !Ref FhirWorksAlarmSNSTopic
       AlarmActions:

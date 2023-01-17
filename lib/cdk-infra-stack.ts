@@ -669,8 +669,8 @@ export default class FhirWorksStack extends Stack {
         apiGatewayRestApi
             .addUsagePlan('apiUsagePlan', {
                 throttle: {
-                    burstLimit: 20, // maximum API request rate limit over a time ranging from one to a few seconds
-                    rateLimit: 10, // average requests per second over an extended period of time
+                    burstLimit: 10, // maximum API request rate limit over a time ranging from one to a few seconds
+                    rateLimit: 5, // average requests per second over an extended period of time
                 },
                 name: `fhir-service-${props!.stage}`,
                 apiStages: [

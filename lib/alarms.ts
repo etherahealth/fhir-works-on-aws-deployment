@@ -395,7 +395,7 @@ export default class AlarmsResource {
                 period: Duration.seconds(60),
                 statistic: 'Minimum',
             }),
-            threshold: isDev ? 2500 : 22500, // in MB; aiming for alarm at 25% remaining
+            threshold: isDev ? 1000 : 22500, // in MB; aiming for alarm at 25% remaining
         });
         clusterFreeStorageSpaceTooLowAlarm.addOkAction(new SnsAction(fhirWorksAlarmSNSTopic));
         clusterFreeStorageSpaceTooLowAlarm.addAlarmAction(new SnsAction(fhirWorksAlarmSNSTopic));
